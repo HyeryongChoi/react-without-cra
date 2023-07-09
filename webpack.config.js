@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   module: {
@@ -29,6 +30,10 @@ module.exports = {
       template: './public/index.html', // 번들링한 css, js 파일을 html 파일에 link태그, scripts태그로 추가
     }),
     new ForkTsCheckerWebpackPlugin(),
+    new CopyWebpackPlugin({
+      // mockServiceWorker.js파일을 dist폴더로 복사
+      patterns: [{ from: 'public/mockServiceWorker.js', to: '.' }],
+    }),
   ],
   devServer: {
     host: 'localhost',
