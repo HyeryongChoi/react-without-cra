@@ -2,7 +2,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --mode=development & open 'http://localhost:3000'",
-    "build": "webpack --mode=production"
+    "build": "webpack --mode=production",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -14,6 +16,15 @@
     "@babel/preset-env": "^7.22.7",
     "@babel/preset-react": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
+    "@storybook/addon-actions": "^7.0.26",
+    "@storybook/addon-controls": "^7.0.26",
+    "@storybook/addon-essentials": "^7.0.26",
+    "@storybook/addon-interactions": "^7.0.26",
+    "@storybook/addon-links": "^7.0.26",
+    "@storybook/blocks": "^7.0.26",
+    "@storybook/react": "^7.0.26",
+    "@storybook/react-webpack5": "^7.0.26",
+    "@storybook/testing-library": "^0.0.14-next.2",
     "@types/babel__core": "^7",
     "@types/babel__preset-env": "^7",
     "@types/react": "^18.2.14",
@@ -22,6 +33,7 @@
     "babel-loader": "^9.1.3",
     "fork-ts-checker-webpack-plugin": "^8.0.0",
     "html-webpack-plugin": "^5.5.3",
+    "storybook": "^7.0.26",
     "typescript": "^5.1.6",
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4",
