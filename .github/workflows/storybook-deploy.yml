@@ -44,7 +44,7 @@ jobs:
           rm -rf .yarn/cache
 
       - name: Install dependencies
-        run: yarn install --immutable --immutable-cache
+        run: yarn install
 
       - name: Set PUBLIC_URL
         run: |
