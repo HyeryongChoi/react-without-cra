@@ -1,0 +1,55 @@
+name: Storybook Deploy
+
+on:
+  push:
+    branches:
+      - hyeryongchoi
+    paths:
+      - src/**
+      - .github/**
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Use repository source
+        uses: actions/checkout@v3
+
+      - name: Use node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      - name: Cache node_modules
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Set PUBLIC_URL
+        run: |
+          PUBLIC_URL=$(echo $GITHUB_REPOSITORY | sed -r 's/^.+\/(.+)$/\/\1\//')
+          echo PUBLIC_URL=$PUBLIC_URL > .env
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      - name: Deploy To 'storybook-deploy' Branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: storybook-deploy
+          publish_dir: ./frontend/storybook-static
