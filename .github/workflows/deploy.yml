@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-22.04
     defaults:
       run:
-        working-directory: ./
+        working-directory: ./frontend
     concurrency:
       group: ${{ github.workflow }}
       cancel-in-progress: true
@@ -50,26 +50,24 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Dist
-          path: ./dist
+          path: frontend/dist
   deploy:
     needs: build
     runs-on: [self-hosted, Linux, ARM64]
     steps:
-      - name: Create 'frontend' directory
-        run: mkdir -p ./frontend
       - name: Remove previous version app
-        working-directory: ./frontend
-        run: rm -rf ./dist
+        working-directory: .
+        run: rm -rf frontend/dist
 
       - name: Download the built file to AWS EC2
         uses: actions/download-artifact@v3
         with:
           name: Dist
-          path: ./dist
+          path: frontend/dist
 
       - name: Upload to S3
         run: |
-          aws s3 sync ./dist s3://chex-bucket/ --delete
+          aws s3 sync frontend/dist s3://chex-bucket/ --delete
       - name: Cloudfront invalidation
         run: |
           aws cloudfront create-invalidation \
