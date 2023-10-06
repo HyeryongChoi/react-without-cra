@@ -39,9 +39,14 @@ jobs:
 
       - name: Cache Yarn project cache
         uses: actions/cache@v3
+        id: yarn-project-cache
         with:
           path: ~/.yarn/cache
           key: ${{ runner.os }}-yarn-project-${{ hashFiles('yarn.lock') }}
+      - if: steps.yarn-project-cache.outputs.cache-hit == 'true'
+        run: echo 'yarn project cache hit!'
+      - if: steps.yarn-project-cache.outputs.cache-hit != 'true'
+        run: echo 'yarn project cache missed!'
 
       - name: Install dependencies
         run: yarn install --immutable
