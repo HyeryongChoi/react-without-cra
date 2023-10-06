@@ -28,7 +28,7 @@ jobs:
         uses: actions/cache@v3
         id: yarn-cache
         with:
-          path: ~/.yarn
+          path: ./.yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
@@ -41,8 +41,10 @@ jobs:
         uses: actions/cache@v3
         id: yarn-project-cache
         with:
-          path: ~/.yarn/cache
-          key: ${{ runner.os }}-yarn-project-${{ hashFiles('yarn.lock') }}
+          path: ./.yarn/cache
+          key: ${{ runner.os }}-yarn-project-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-project-
       - if: steps.yarn-project-cache.outputs.cache-hit == 'true'
         run: echo 'yarn project cache hit!'
       - if: steps.yarn-project-cache.outputs.cache-hit != 'true'
