@@ -37,11 +37,11 @@ jobs:
       - if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: echo 'yarn cache missed!'
 
-      # - name: Cache Yarn project cache
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ./.yarn/cache
-      #     key: ${{ runner.os }}-yarn-project-${{ hashFiles('yarn.lock') }}
+      - name: Cache Yarn project cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.yarn/cache
+          key: ${{ runner.os }}-yarn-project-${{ hashFiles('yarn.lock') }}
 
       - name: Install dependencies
         run: yarn install --immutable
