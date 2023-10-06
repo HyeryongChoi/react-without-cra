@@ -24,18 +24,18 @@ jobs:
         with:
           node-version: 18.x
 
-      - name: Cache Yarn global cache
-        uses: actions/cache@v3
-        id: yarn-cache
-        with:
-          path: ./.yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - if: steps.yarn-cache.outputs.cache-hit == 'true'
-        run: echo 'yarn cache hit!'
-      - if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: echo 'yarn cache missed!'
+      # - name: Cache Yarn global cache
+      #   uses: actions/cache@v3
+      #   id: yarn-cache
+      #   with:
+      #     path: ./.yarn
+      #     key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-yarn-
+      # - if: steps.yarn-cache.outputs.cache-hit == 'true'
+      #   run: echo 'yarn cache hit!'
+      # - if: steps.yarn-cache.outputs.cache-hit != 'true'
+      #   run: echo 'yarn cache missed!'
 
       - name: Cache Yarn project cache
         uses: actions/cache@v3
@@ -78,8 +78,8 @@ jobs:
       - name: Upload to S3
         run: |
           aws s3 sync frontend/dist s3://chex-bucket/ --delete
-      - name: Cloudfront invalidation
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} \
-            --paths "/index.html"
+      # - name: Cloudfront invalidation
+      #   run: |
+      #     aws cloudfront create-invalidation \
+      #       --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} \
+      #       --paths "/index.html"

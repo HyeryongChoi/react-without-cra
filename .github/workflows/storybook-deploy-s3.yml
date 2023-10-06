@@ -27,7 +27,7 @@ jobs:
       - name: Cache Yarn global cache
         uses: actions/cache@v3
         with:
-          path: ~/.yarn
+          path: ./.yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
@@ -36,7 +36,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./.yarn/cache
-          key: ${{ runner.os }}-yarn-project-${{ hashFiles('frontend/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-project-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-project-
 
@@ -68,8 +68,8 @@ jobs:
       - name: Upload to S3
         run: |
           aws s3 sync frontend/storybook s3://chex-bucket/storybook --delete
-      - name: Cloudfront invalidation
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} \
-            --paths "/storybook/*"
+      # - name: Cloudfront invalidation
+      #   run: |
+      #     aws cloudfront create-invalidation \
+      #       --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} \
+      #       --paths "/storybook/*"
